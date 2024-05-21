@@ -28,7 +28,7 @@ const formSchema = z.object({
 
 //* Se define un tipo de objeto. En este caso se utiliza la libreria zod para inferir el tipo de objeto que
 //* se definió previamente. Es decir, UserFormData va a tener la forma de formSchema.
-type UserFormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof formSchema>;
 
 //* Se define otro tipo para las props que recibira el componente de react.
 //* Este tendrá un metodo onSave que recibirá un formulario con el tipo definido previamente(UserFormData)
@@ -38,9 +38,17 @@ type Props = {
   currentUser: User;
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
+  title?: string;
+  buttonText?: string;
 };
 
-const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
+const UserProfileForm = ({
+  onSave,
+  isLoading,
+  currentUser,
+  title = "User Profile",
+  buttonText = "Submit",
+}: Props) => {
   //* Se llama al hook de react-hook-form useForm, y se aclara que el formulario será del tipo UserFormData.
   //*
   const form = useForm<UserFormData>({
@@ -60,7 +68,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
         className="space-y-4 bg-gray-50 rounded-lg md:p-10"
       >
         <div className="">
-          <h2 className="text-2xl font-bold">User Profile Form</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and change your profile information here
           </FormDescription>
@@ -135,7 +143,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
           <LoadingButton />
         ) : (
           <Button type="submit" className="bg-orange-500">
-            Submit
+            {buttonText}
           </Button>
         )}
       </form>
